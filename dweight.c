@@ -4,22 +4,16 @@
 
 int main(void)
 {
-    int height;
-    int length;
-    int width;
+    int height = 8;
+    int length = 12;
+    int width = 10;
     int volume;
-    int weight;
-
-    height = 8;
-    length = 12;
-    width = 10;
 
     volume = height * length * width;
-    weight = (volume + 165) / 166;
 
     printf("Dimensions: %dx%dx%d\n", length, width, height);
     printf("Volume (cubic inches): %d\n", volume);
-    printf("Dismensional weight (pounds): %d\n", weight);
+    printf("Dismensional weight (pounds): %d\n", (volume + 165) / 166);
 
     return 0;
 }
