@@ -2,7 +2,11 @@
 
 int main(void)
 {
-    printf("%d\n", (0 - 1) % 5);
-    printf("%d\n", (1 - 1) % 5);
+    while (1)
+    {
+        puts("1");
+    }
+    
+
     return 0;
 }
