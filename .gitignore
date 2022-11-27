@@ -1,0 +1,9 @@
+*.dSYM
+*.vscode
+baekjoon.c
+baekjoon
+basic.c
+basic
+test.c
+test
+*.py
