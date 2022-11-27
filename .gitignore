@@ -6,4 +6,12 @@ basic.c
 basic
 test.c
 test
+b.c
+b
 *.py
+.DS_Store
+a.out
+
+# 적용하려면...
+# git rm -r --cached .
+# 이후 add -> commit -> push 하기
