@@ -15,3 +15,4 @@ a.out
 # 적용하려면...
 # git rm -r --cached .
 # 이후 add -> commit -> push 하기
+# 강제 push는 branch명에 +접두사 추가하기 ex) git push origin +main
