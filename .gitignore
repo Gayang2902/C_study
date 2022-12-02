@@ -1,3 +1,7 @@
+*
+!*.*
+!*/
+
 *.dSYM
 *.vscode
 baekjoon.c
