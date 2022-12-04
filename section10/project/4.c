@@ -11,7 +11,9 @@
 #define NUM_CARDS (5)
 
 bool g_straight;
+bool g_ace_low_straight;
 bool g_flush;
+bool g_royal_flush;
 bool g_four;
 bool g_three;
 int g_pairs;
@@ -20,16 +22,15 @@ void read_cards(char hand[][2]);
 void analyze_hand(char hand[][2]);
 void print_result(void);
 void selection_sort(char hand[][2]);
-bool duplicate_card(int rank, int suit, int hand[NUM_CARDS][2], int cards_read);
+bool duplicate_card(int rank, int suit, char hand[NUM_CARDS][2], int cards_read);
 
 int main(void)
 {
     char hand[5][2];
     for (;;) {
         read_cards(hand);
-        sort(hand);
-        // analyze_hand(hand);
-        // print_result();
+        analyze_hand(hand);
+        print_result();
     }
 }
 
@@ -102,7 +103,7 @@ void read_cards(char hand[][2])
 }
 
 // 카드 중복검사
-bool duplicate_card(int rank, int suit, int hand[NUM_CARDS][2], int cards_read)
+bool duplicate_card(int rank, int suit, char hand[NUM_CARDS][2], int cards_read)
 {
     for (int i = 0; i < cards_read; i++) {
         if (hand[i][0] == rank && hand[i][1] == suit) {
@@ -114,11 +115,12 @@ bool duplicate_card(int rank, int suit, int hand[NUM_CARDS][2], int cards_read)
 
 void analyze_hand(char hand[NUM_CARDS][2])
 {
-    int num_consec;
     int card, rank, matches;
 
     g_straight = false;
+    g_ace_low_straight = false;
     g_flush = false;
+    g_royal_flush = false;
     g_four = false;
     g_three = false;
     g_pairs = 0;
@@ -127,10 +129,10 @@ void analyze_hand(char hand[NUM_CARDS][2])
 
     // flush check (나중에 NUM_CARDS가 수정되어도 유지 가능한 코드로 작성됨)
     for (card = 1; card < NUM_CARDS; card++) {
-        if (hand[0][1] != hand[card][1]) {
+        if (hand[card][1] != hand[0][1]) {
             break;
         }
-        if (card == NUM_CARDS + 1) {
+        if (card == NUM_CARDS - 1) {
             g_flush = true;
         }
     }
@@ -140,8 +142,16 @@ void analyze_hand(char hand[NUM_CARDS][2])
         if (hand[card][0] - hand[card - 1][0] != 1) {
             break;
         }
+        if (card == NUM_CARDS - 2 && hand[NUM_CARDS - 1][0] == 12) {
+            g_ace_low_straight = true;
+            break;
+        }
         if (card == NUM_CARDS - 1) {
             g_straight = true;
+            if (g_flush && hand[0][0] == 8) {
+                g_royal_flush = true;
+                return;
+            }
         }
     }
 
@@ -201,7 +211,9 @@ void analyze_hand(char hand[NUM_CARDS][2])
 
 void print_result(void)
 {
-    if (g_straight && g_flush) {
+    if (g_royal_flush) {
+        printf("Royal straight");
+    } else if (g_straight && g_flush) {
         printf("Straight flush");
     } else if (g_four) {
         printf("Four of a kind");
@@ -209,6 +221,8 @@ void print_result(void)
         printf("Full house");
     } else if (g_flush) {
         printf("Flush");
+    } else if (g_ace_low_straight) {
+        printf("Ace-low straight");
     } else if (g_straight) {
         printf("Straight");
     } else if (g_three) {
